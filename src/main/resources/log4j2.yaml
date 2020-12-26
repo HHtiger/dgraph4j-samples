@@ -1,0 +1,42 @@
+Configuration:
+  status: warn
+
+  Appenders:
+    Console:
+      name: CONSOLE
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %l - %m%n"
+    RollingRandomAccessFile:
+      - name: PAYLOAD
+        fileName: logs/payload.log
+        filePattern: "logs/$${date:yyyy-MM}/payload-%d{MM-dd-yyyy}-%i.log.gz"
+        PatternLayout:
+          Pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %C.%M[%L line] - %m%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 1 KB
+      - name: APPLICATION
+        fileName: logs/application.log
+        filePattern: "logs/$${date:yyyy-MM}/application-%d{MM-dd-yyyy}-%i.log.gz"
+        PatternLayout:
+          Pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %C.%M[%L line] - %m%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 1 KB
+
+  Loggers:
+    Root:
+      level: warn
+      AppenderRef:
+        - ref: CONSOLE
+#        - ref: PAYLOAD
+#        - ref: APPLICATION
+
+    Logger:
+      - name: com.gost.Main
+        additivity: false
+        level: warn
+        AppenderRef:
+          - ref: CONSOLE
+#          - ref: ROLLING_FILE
